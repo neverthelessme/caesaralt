@@ -1,55 +1,41 @@
 #include<stdio.h>
 
-#include<ctype.h>
-
+void encrypt(char pt[20], char ct[30], int key) {
+  int i = 0;
+  while (pt[i] != '\0') {
+    if (pt[i] != 32) {
+      ct[i] = pt[i] + key;
+    } else
+      ct[i] = 32;
+    i++;
+  }
+  ct[i] = '\0';
+  puts(ct);
+}
+void decrypt(char ct[30], char pt[20], int key) {
+  int i = 0;
+  while (ct[i] != '\0') {
+    if (ct[i] != 32) {
+      ct[i] = ct[i] - key;
+    } else
+      ct[i] = 32;
+    i++;
+  }
+  ct[i] = '\0';
+  puts(ct);
+}
 int main() {
-
-    char text[500], ch;
-
-    int key;
-
-    // Taking user input.
-    printf("Enter a message to encrypt: ");
-
-    scanf("%s", text);
-
-    printf("Enter the key: ");
-
-    scanf("%d", & key);
-
-    // Visiting character by character.
-
-    for (int i = 0; text[i] != '\0'; ++i) {
-
-        ch = text[i];
-        // Check for valid characters.
-        if (isalnum(ch)) {
-
-            //Lowercase characters.
-            if (islower(ch)) {
-                ch = (ch - 'a' + key) % 26 + 'a';
-            }
-            // Uppercase characters.
-            if (isupper(ch)) {
-                ch = (ch - 'A' + key) % 26 + 'A';
-            }
-
-            // Numbers.
-            if (isdigit(ch)) {
-                ch = (ch - '0' + key) % 10 + '0';
-            }
-        }
-        // Invalid character.
-        else {
-            printf("Invalid Message");
-        }
-
-        // Adding encoded answer.
-        text[i] = ch;
-
-    }
-
-    printf("Encrypted message: %s", text);
-
+  int key, choice;
+  char pt[20], ct[30];
+  printf("Enter the plain text to be encrypted: ");
+  fgets(pt, sizeof(pt), stdin);
+  printf("Enter the key value: ");
+  scanf("%d", & key);
+  encrypt(pt, ct, key);
+  printf("Enter 1 to decrypt the message: \n");
+  scanf("%d", & choice);
+  if (choice == 1)
+    decrypt(ct, pt, key);
+  else 
     return 0;
 }
